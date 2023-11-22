@@ -6,6 +6,7 @@ import StartScreen from "./StartScreen";
 import { useEffect } from "react";
 import { useReducer } from "react";
 import Question from "./Question";
+import NextButton from "./NextButton";
 
 const initState = {
   questions: [],
@@ -37,6 +38,9 @@ function reducer(state, action) {
           : state.points,
     };
   }
+  if (action.type === "nextQuestion") {
+    return { ...state, index: state.index + 1, answer: null };
+  }
 }
 
 function App() {
@@ -64,11 +68,14 @@ function App() {
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
         {status === "active" && (
-          <Question
-            questions={questions[index]}
-            dispatch={dispatch}
-            answer={answer}
-          />
+          <>
+            <Question
+              questions={questions[index]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
+          </>
         )}
       </Main>
     </div>
